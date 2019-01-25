@@ -9,8 +9,20 @@ Currently only supports Swagger v2.
 npm i --save-dev @manifoldco/swagger-to-graphql
 ```
 
-See the [generate.js](./scripts/generate.js) script for an example of how to
-load files.
+```js
+const swaggerToGQL = require('@manifoldco/swagger-to-graphql');
+
+swaggerToGQL(spec, [options]);
+```
+
+`spec` must be in JSON format. For an example of converting YAML to JSON, see
+the [generate.js](./scripts/generate.js) script.
+
+#### Options
+
+| Name      | Default | Description                                                |
+| :-------- | :------ | :--------------------------------------------------------- |
+| `version` | `2`     | Which Swagger version to use. Currently only supports `2`. |
 
 ## Notes
 
