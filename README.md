@@ -3,6 +3,15 @@
 Node client for generating crude GraphQL specs from Swagger OpenAPI.
 Currently only supports Swagger v2.
 
+#### Support
+
+| GraphQL Features                     |     |
+| :----------------------------------- | :-: |
+| Enum                                 | ✅  |
+| ID                                   | ✅  |
+| Non-nullable                         | ✅  |
+| Primitives (string, boolean, number) | ✅  |
+
 ## Usage
 
 ```
