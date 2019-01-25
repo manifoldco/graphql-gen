@@ -8,6 +8,7 @@ export interface Swagger2 {
 
 export interface Swagger2Definition {
   $ref?: string;
+  allOf?: Swagger2Definition[];
   enum?: string[];
   description?: string;
   items?: Swagger2Definition;
@@ -93,18 +94,37 @@ function parse(spec: Swagger2) {
   function buildNextObject() {
     const nextObject = queue.pop();
     if (!nextObject) return; // Geez TypeScript it’s going to be OK
-    const [ID, { properties, required }] = nextObject;
+    const [ID, { allOf, properties, required }] = nextObject;
 
-    // We can skip this if it’s a primitive or array of something else
-    if (typeof properties !== 'object') {
+    let allProperties = properties || {};
+    let implementations: string[] = [];
+
+    // Include allOf, if specified
+    if (Array.isArray(allOf)) {
+      allOf.forEach(item => {
+        // Add “implements“ if this references other items
+        if (item.$ref) {
+          const [refName] = getRef(item.$ref);
+          implementations.push(refName);
+        } else if (item.properties) {
+          allProperties = { ...allProperties, ...item.properties };
+        }
+      });
+    }
+
+    // If nothing’s here, let’s skip this one.
+    if (!Object.keys(allProperties).length) {
       return;
     }
 
     // Open type
-    output.push(`type ${camelCase(ID)} {`);
+    const isImplementing = implementations.length
+      ? ` implements ${implementations.join(', ')}`
+      : '';
+    output.push(`type ${camelCase(ID)}${isImplementing} {`);
 
     // Populate type
-    Object.entries(properties).forEach(([key, value]) => {
+    Object.entries(allProperties).forEach(([key, value]) => {
       const optional = !Array.isArray(required) || required.indexOf(key) === -1;
       const nonNullable = optional ? '' : '!';
       const name = camelCase(key);

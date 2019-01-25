@@ -5,7 +5,7 @@ const yaml = require('js-yaml');
 const swaggerToGQL = require('../dist/cjs'); // replace with: require('@manifoldco/swagger-to-graphql')
 
 // 1. Load all YAML files from a certain directory
-glob('../spec/**/*.yaml', (error, matches) => {
+glob('./spec/**/*.yaml', { root: resolve(__dirname, '..') }, (error, matches) => {
   if (error) {
     console.error('No files found');
     return;

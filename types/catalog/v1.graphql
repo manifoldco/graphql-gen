@@ -296,6 +296,16 @@ enum ExpandedProductType {
 enum ExpandedProductVersion {
   Version1
 }
+type ExpandedPlanBody implements PlanBody {
+  "An array of feature definitions for the plan, as defined on the Product."
+  expandedFeatures: [ExpandedFeature]
+  "A boolean flag that indicates if a plan is free or not based on it's cost and features."
+  free: Boolean
+  "Plan cost using its default features plus base cost."
+  defaultCost: Int
+  "A boolean flag that indicates if a plan has customizable features."
+  customizable: Boolean
+}
 type ExpandedPlan {
   id: ID!
   version: ExpandedPlanVersion!
@@ -307,6 +317,11 @@ enum ExpandedPlanType {
 }
 enum ExpandedPlanVersion {
   Version1
+}
+type ExpandedFeature implements FeatureType {
+  "The string value set for the feature on the plan, this should only be used if the value property is null."
+  valueString: String
+  value: [FeatureValueDetails]
 }
 type Error {
   "The error type"

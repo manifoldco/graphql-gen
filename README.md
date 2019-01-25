@@ -9,8 +9,11 @@ Currently only supports Swagger v2.
 | :----------------------------------- | :-: |
 | Enum                                 | ✅  |
 | ID                                   | ✅  |
+| Implements (`allOf`)                 | ✅  |
 | Non-nullable                         | ✅  |
 | Primitives (string, boolean, number) | ✅  |
+| Query                                | 🚫  |
+| Mutation                             | 🚫  |
 
 ## Usage
 

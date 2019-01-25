@@ -9,12 +9,12 @@ describe('GraphQL gen', () => {
   it('matches the snapshots generated', () => {
     execSync('npm run generate');
 
-    const files = glob.sync('../spec/**/*.yaml');
+    const files = glob.sync('./spec/**/*.yaml', { root: resolve(__dirname, '..') });
 
     if (!Array.isArray(files)) return;
 
     files.forEach(file => {
-      const pathname = resolve(__dirname, file);
+      const pathname = resolve(__dirname, '..', file);
       const json = yaml.safeLoad(readFileSync(pathname, 'UTF-8'));
       const converted = swaggerToGraphQL(json);
       const snapshot = pathname
