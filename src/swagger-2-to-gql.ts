@@ -56,7 +56,7 @@ function parse(spec: Swagger2) {
     if ($ref) {
       const [refName, refProperties] = getRef($ref);
       if (refName === 'ID') return 'ID';
-      return `[${TYPES[refProperties.type] || refName || 'scalar'}]`;
+      return `${TYPES[refProperties.type] || refName || 'scalar'}`;
     }
 
     if (type === 'array' && items) {
@@ -116,11 +116,11 @@ function parse(spec: Swagger2) {
     if (!Object.keys(allProperties).length) {
       return;
     }
-
     // Open type
     const isImplementing = implementations.length
       ? ` implements ${implementations.join(', ')}`
       : '';
+
     output.push(`type ${camelCase(ID)}${isImplementing} {`);
 
     // Populate type

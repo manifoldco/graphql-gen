@@ -5,21 +5,21 @@ type ValueProp {
   body: String!
 }
 type UpdateProviderBody {
-  teamId: [String]
-  label: [String]
-  name: [String]
-  logoUrl: [String]
+  teamId: String
+  label: String
+  name: String
+  logoUrl: String
   supportEmail: String
   documentationUrl: String
 }
 type UpdateProvider {
   id: ID!
-  body: [UpdateProviderBody]!
+  body: UpdateProviderBody!
 }
 type UpdateProductBody {
-  name: [String]
-  logoUrl: [String]
-  listing: [ProductListing]
+  name: String
+  logoUrl: String
+  listing: ProductListing
   "140 character sentence positioning the product."
   tagline: String
   "A list of value propositions of the product."
@@ -31,29 +31,29 @@ type UpdateProductBody {
   termsUrl: String
   featureTypes: [FeatureType]
   integration: UpdateProductBodyIntegration
-  tags: [ProductTags]
+  tags: ProductTags
 }
 type UpdateProductBodyIntegration {
-  provisioning: [String]
+  provisioning: String
   baseUrl: String
   ssoUrl: String
   version: UpdateProductBodyIntegrationVersion
-  features: [ProductIntegrationFeatures]
+  features: ProductIntegrationFeatures
 }
 enum UpdateProductBodyIntegrationVersion {
   V1
 }
 type UpdateProduct {
   id: ID!
-  body: [UpdateProductBody]!
+  body: UpdateProductBody!
 }
 type UpdatePlanBody {
-  name: [String]
-  label: [String]
-  state: [String]
+  name: String
+  label: String
+  state: String
   "Used in conjuction with resizable_to to set or unset the list"
   hasResizeConstraints: Boolean
-  resizableTo: [PlanResizeList]
+  resizableTo: PlanResizeList
   "Array of Region IDs"
   regions: ID
   "Array of Feature Values"
@@ -65,11 +65,11 @@ type UpdatePlanBody {
 }
 type UpdatePlan {
   id: ID!
-  body: [UpdatePlanBody]!
+  body: UpdatePlanBody!
 }
 type RegionBody {
-  platform: [String]!
-  location: [String]!
+  platform: String!
+  location: String!
   name: String!
   priority: Number!
 }
@@ -77,7 +77,7 @@ type Region {
   id: ID!
   type: RegionType!
   version: RegionVersion!
-  body: [RegionBody]!
+  body: RegionBody!
 }
 enum RegionVersion {
   Version1
@@ -87,9 +87,9 @@ enum RegionType {
 }
 type ProviderBody {
   teamId: ID!
-  label: [String]!
-  name: [String]!
-  logoUrl: [String]
+  label: String!
+  name: String!
+  logoUrl: String
   supportEmail: String
   documentationUrl: String
 }
@@ -97,7 +97,7 @@ type Provider {
   id: ID!
   version: ProviderVersion!
   type: ProviderType!
-  body: [ProviderBody]!
+  body: ProviderBody!
 }
 enum ProviderType {
   PROVIDER
@@ -138,11 +138,11 @@ enum ProductIntegrationFeaturesRegion {
 type ProductBody {
   providerId: ID!
   "Product labels are globally unique and contain the provider name."
-  label: [String]!
-  name: [String]!
-  state: [String]!
-  listing: [ProductListing]!
-  logoUrl: [String]!
+  label: String!
+  name: String!
+  state: String!
+  listing: ProductListing!
+  logoUrl: String!
   "140 character sentence positioning the product."
   tagline: String!
   "A list of value propositions of the product."
@@ -155,14 +155,14 @@ type ProductBody {
   featureTypes: [FeatureType]!
   billing: ProductBodyBilling!
   integration: ProductBodyIntegration!
-  tags: [ProductTags]
+  tags: ProductTags
 }
 type ProductBodyIntegration {
-  provisioning: [String]!
+  provisioning: String!
   baseUrl: String!
   ssoUrl: String
   version: ProductBodyIntegrationVersion!
-  features: [ProductIntegrationFeatures]!
+  features: ProductIntegrationFeatures!
 }
 enum ProductBodyIntegrationVersion {
   V1
@@ -187,7 +187,7 @@ type Product {
   id: ID!
   version: ProductVersion!
   type: ProductType!
-  body: [ProductBody]!
+  body: ProductBody!
 }
 enum ProductType {
   PRODUCT
@@ -198,10 +198,10 @@ enum ProductVersion {
 type PlanBody {
   providerId: ID!
   productId: ID!
-  name: [String]!
-  label: [String]!
-  state: [String]!
-  resizableTo: [PlanResizeList]
+  name: String!
+  label: String!
+  state: String!
+  resizableTo: PlanResizeList
   "Array of Region IDs"
   regions: ID!
   "Array of Feature Values"
@@ -215,7 +215,7 @@ type Plan {
   id: ID!
   version: PlanVersion!
   type: PlanType!
-  body: [PlanBody]!
+  body: PlanBody!
 }
 enum PlanType {
   PLAN
@@ -224,13 +224,13 @@ enum PlanVersion {
   Version1
 }
 type FeatureValueDetails {
-  label: [String]!
-  name: [String]!
+  label: String!
+  name: String!
   "The cost that will be added to the monthly plan cost when this valueis selected or is default for the plan.Cost is deprecated in favor of the `price.cost` field."
   cost: Int
   "Price describes the cost of a feature. It should be preferred overthe `cost` property."
   price: FeatureValueDetailsPrice
-  numericDetails: [FeatureNumericDetails]
+  numericDetails: FeatureNumericDetails
 }
 type FeatureValueDetailsPrice {
   "Cost is the price in cents that will be added to plan's base costwhen this value is selected or is default for the plan.Number features should use the cost range instead."
@@ -238,17 +238,17 @@ type FeatureValueDetailsPrice {
   "When a feature is used to multiply the cost of the plan or ofanother feature, multiply factor is used for calculation.A feature cannot have both a cost and a multiply factor."
   multiplyFactor: Number
   "Price describes how the feature cost should be calculated."
-  formula: [String]
+  formula: String
   "Description explains how a feature is calculated to the user."
   description: String
 }
 type FeatureValue {
-  feature: [String]!
-  value: [String]!
+  feature: String!
+  value: String!
 }
 type FeatureType {
-  label: [String]!
-  name: [String]!
+  label: String!
+  name: String!
   type: FeatureTypeType!
   "This sets whether or not the feature can be customized by a consumer."
   customizable: Boolean
@@ -258,7 +258,7 @@ type FeatureType {
   downgradable: Boolean
   "Sets if this feature’s value is trackable from the provider,this only really affects numeric constraints."
   measurable: Boolean
-  values: [FeatureValuesList]
+  values: FeatureValuesList
 }
 enum FeatureTypeType {
   BOOLEAN
@@ -286,9 +286,9 @@ type ExpandedProduct {
   id: ID!
   version: ExpandedProductVersion!
   type: ExpandedProductType!
-  body: [ProductBody]!
+  body: ProductBody!
   plans: [ExpandedPlan]
-  provider: [Provider]!
+  provider: Provider!
 }
 enum ExpandedProductType {
   PRODUCT
@@ -310,7 +310,7 @@ type ExpandedPlan {
   id: ID!
   version: ExpandedPlanVersion!
   type: ExpandedPlanType!
-  body: [ExpandedPlanBody]!
+  body: ExpandedPlanBody!
 }
 enum ExpandedPlanType {
   PLAN
@@ -321,7 +321,7 @@ enum ExpandedPlanVersion {
 type ExpandedFeature implements FeatureType {
   "The string value set for the feature on the plan, this should only be used if the value property is null."
   valueString: String
-  value: [FeatureValueDetails]
+  value: FeatureValueDetails
 }
 type Error {
   "The error type"
@@ -330,14 +330,14 @@ type Error {
   message: [String]!
 }
 type CreateRegion {
-  body: [RegionBody]!
+  body: RegionBody!
 }
 type CreateProvider {
-  body: [ProviderBody]!
+  body: ProviderBody!
 }
 type CreateProduct {
-  body: [ProductBody]!
+  body: ProductBody!
 }
 type CreatePlan {
-  body: [PlanBody]!
+  body: PlanBody!
 }
