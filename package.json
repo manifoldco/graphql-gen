@@ -1,6 +1,6 @@
 {
   "name": "@manifoldco/graphql-gen",
-  "version": "1.1.0-alpha.4",
+  "version": "1.1.0",
   "main": "dist/index.js",
   "bin": {
     "graphql-gen": "./bin/cli.js"
@@ -9,10 +9,10 @@
     "bin",
     "dist"
   ],
-  "homepage": "https://github.com/manifoldco/swagger-to-graphql#readme",
+  "homepage": "https://github.com/manifoldco/graphql-gen#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/manifoldco/swagger-to-graphql.git"
+    "url": "git+https://github.com/manifoldco/graphql-gen.git"
   },
   "keywords": [
     "swagger",
@@ -24,7 +24,7 @@
   "author": "dangodev",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/manifoldco/swagger-to-graphql/issues"
+    "url": "https://github.com/manifoldco/graphql-gen/issues"
   },
   "scripts": {
     "build": "node scripts/build",

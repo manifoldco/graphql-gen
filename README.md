@@ -20,20 +20,23 @@ Node client for generating crude GraphQL specs from Swagger OpenAPI.
 
 ### CLI
 
-```
+```bash
 npx @manifoldco/graphql-gen schema.yaml --output schema.graphql
+
+# 🚀 schema.yaml -> schema.graphql [2ms]
 ```
 
-This will save a `schema.graphql` file in the current folder.
+This will save a `schema.graphql` file in the current folder. The CLI can
+accept YAML or JSON for the input file.
 
 ### Node
 
-```
+```bash
 npm i --save-dev @manifoldco/graphql-gen
 ```
 
 ```js
-const graphqlGen = require('@manifoldco/swagger-to-graphql');
+const graphqlGen = require('@manifoldco/graphql-gen');
 
 graphqlGen(spec, [options]);
 ```
