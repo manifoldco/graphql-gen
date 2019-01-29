@@ -1,10 +1,10 @@
-const { existsSync, mkdirSync, readFileSync, writeFileSync } = require('fs');
 const { resolve, sep } = require('path');
+const { exec } = require('child_process');
 const glob = require('glob');
-const yaml = require('js-yaml');
-const swaggerToGQL = require('../dist/cjs'); // replace with: require('@manifoldco/swagger-to-graphql')
 
-// 1. Load all YAML files from a certain directory
+const graphqlGen = resolve(__dirname, '..', 'bin', 'graphql-gen.js');
+
+// Load all YAML files from a certain directory
 glob('./spec/**/*.yaml', { root: resolve(__dirname, '..') }, (error, matches) => {
   if (error) {
     console.error('No files found');
@@ -16,21 +16,10 @@ glob('./spec/**/*.yaml', { root: resolve(__dirname, '..') }, (error, matches) =>
     return;
   }
 
-  matches.forEach(file => generate(file));
+  matches.forEach(file => {
+    const output = file
+      .replace(`${sep}spec${sep}`, `${sep}types${sep}`)
+      .replace(/\.ya?ml$/i, '.graphql');
+    exec(`node ${graphqlGen} ${file} -o ${output}`);
+  });
 });
-
-// 2. Convert to GraphQL types, write to `./types` folder.
-function generate(file) {
-  const source = resolve(__dirname, '..', file);
-  const segments = source.split(sep);
-  const dirname = segments[segments.length - 2];
-  const basename = segments[segments.length - 1].replace(/\.yaml$/i, '.graphql');
-
-  const output = resolve(__dirname, '..', 'types', dirname);
-  if (!existsSync(output)) {
-    mkdirSync(output);
-  }
-
-  const schema = swaggerToGQL(yaml.safeLoad(readFileSync(source, 'UTF-8')));
-  writeFileSync(resolve(output, basename), schema);
-}

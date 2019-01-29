@@ -1,7 +1,8 @@
-# ⚛️ swagger-to-graphql
+# ⚛️ graphql-gen
 
 Node client for generating crude GraphQL specs from Swagger OpenAPI.
-Currently only supports Swagger v2.
+
+💅 Prettifies output via [Prettier][prettier].
 
 #### Support
 
@@ -17,24 +18,35 @@ Currently only supports Swagger v2.
 
 ## Usage
 
+### CLI
+
 ```
-npm i --save-dev @manifoldco/swagger-to-graphql
+npx @manifoldco/graphql-gen schema.yaml --output schema.graphql
+```
+
+This will save a `schema.graphql` file in the current folder.
+
+### Node
+
+```
+npm i --save-dev @manifoldco/graphql-gen
 ```
 
 ```js
-const swaggerToGQL = require('@manifoldco/swagger-to-graphql');
+const graphqlGen = require('@manifoldco/swagger-to-graphql');
 
-swaggerToGQL(spec, [options]);
+graphqlGen(spec, [options]);
 ```
 
 `spec` must be in JSON format. For an example of converting YAML to JSON, see
 the [generate.js](./scripts/generate.js) script.
 
-#### Options
+### Options
 
-| Name      | Default | Description                                                |
-| :-------- | :------ | :--------------------------------------------------------- |
-| `version` | `2`     | Which Swagger version to use. Currently only supports `2`. |
+| Name      | Default  | Description                                                |
+| :-------- | :------- | :--------------------------------------------------------- |
+| `output`  | (stdout) | Where should the output file be saved?                     |
+| `swagger` | `2`      | Which Swagger version to use. Currently only supports `2`. |
 
 ## FAQ
 
@@ -65,3 +77,5 @@ GraphQL cares about this, but doesn’t assume the formatting. Is this UNIX
 time? ISO? Are there timezones? Types can be so much more descriptive than
 mere `string` or `int`, and GraphQL gives you the tools to declare this
 yourself.
+
+[prettier]: https://github.com/prettier/prettier

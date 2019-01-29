@@ -17,6 +17,7 @@ if (!existsSync(output)) {
   mkdirSync(output);
 }
 
+// Build JS
 const build = format =>
   rollup({
     input: `./src/index.ts`,
@@ -25,7 +26,7 @@ const build = format =>
     bundle.write({
       file: resolve(output, `${format}.js`),
       format,
-      name: 'SwaggerToGraphQL',
+      name: 'graphqlGen',
     })
   );
 
