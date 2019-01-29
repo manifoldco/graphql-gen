@@ -11,7 +11,7 @@ const graphQLGen = require('../dist/cjs');
 const cli = meow(
   `
 Usage
-  $ @manifoldco/graphql-gen [input] [options]
+  $ graphql-gen [input] [options]
 
 Options
   --help          display this
