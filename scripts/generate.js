@@ -2,9 +2,20 @@ const { resolve, sep } = require('path');
 const { exec } = require('child_process');
 const glob = require('glob');
 
-const graphqlGen = resolve(__dirname, '..', 'bin', 'graphql-gen.js');
+const graphqlGen = resolve(__dirname, '..', 'bin', 'cli.js');
 
-// Load all YAML files from a certain directory
+// Settings
+const INPUT_DIR = 'spec';
+const OUTPUT_DIR = 'types';
+
+// Methods
+function rename(filename) {
+  return filename
+    .replace(`${sep}${INPUT_DIR}${sep}`, `${sep}${OUTPUT_DIR}${sep}`)
+    .replace(/\.ya?ml$/i, '.graphql');
+}
+
+// Initialize
 glob('./spec/**/*.yaml', { root: resolve(__dirname, '..') }, (error, matches) => {
   if (error) {
     console.error('No files found');
@@ -12,14 +23,9 @@ glob('./spec/**/*.yaml', { root: resolve(__dirname, '..') }, (error, matches) =>
   }
 
   if (typeof matches === 'string') {
-    generate(matches);
+    exec(`node ${graphqlGen} ${matches} -o ${rename(matches)}`);
     return;
   }
 
-  matches.forEach(file => {
-    const output = file
-      .replace(`${sep}spec${sep}`, `${sep}types${sep}`)
-      .replace(/\.ya?ml$/i, '.graphql');
-    exec(`node ${graphqlGen} ${file} -o ${output}`);
-  });
+  matches.forEach(file => exec(`node ${graphqlGen} ${file} -o ${rename(file)}`));
 });

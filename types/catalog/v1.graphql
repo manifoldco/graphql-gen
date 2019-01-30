@@ -31,7 +31,7 @@ type UpdateProductBody {
   termsUrl: String
   featureTypes: [FeatureType]
   integration: UpdateProductBodyIntegration
-  tags: ProductTags
+  tags: [String]
 }
 type UpdateProductBodyIntegration {
   provisioning: String
@@ -53,7 +53,7 @@ type UpdatePlanBody {
   state: String
   "Used in conjuction with resizable_to to set or unset the list"
   hasResizeConstraints: Boolean
-  resizableTo: PlanResizeList
+  resizableTo: ID
   "Array of Region IDs"
   regions: ID
   "Array of Feature Values"
@@ -155,7 +155,7 @@ type ProductBody {
   featureTypes: [FeatureType]!
   billing: ProductBodyBilling!
   integration: ProductBodyIntegration!
-  tags: ProductTags
+  tags: [String]
 }
 type ProductBodyIntegration {
   provisioning: String!
@@ -201,7 +201,7 @@ type PlanBody {
   name: String!
   label: String!
   state: String!
-  resizableTo: PlanResizeList
+  resizableTo: ID
   "Array of Region IDs"
   regions: ID!
   "Array of Feature Values"
@@ -258,7 +258,7 @@ type FeatureType {
   downgradable: Boolean
   "Sets if this feature’s value is trackable from the provider, this only really affects numeric constraints."
   measurable: Boolean
-  values: FeatureValuesList
+  values: [FeatureValueDetails]
 }
 enum FeatureTypeType {
   BOOLEAN

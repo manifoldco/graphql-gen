@@ -46,16 +46,21 @@ function parse(spec: Swagger2) {
   const { definitions } = spec;
 
   function getRef(lookup: string): [string, Swagger2Definition] {
-    const ref = lookup.replace('#/definitions/', '');
-    return [ref, definitions[ref]];
+    const ID = lookup.replace('#/definitions/', '');
+    const ref = definitions[ID];
+    return [ID, ref];
   }
 
-  function getType(definition: Swagger2Definition, nestedName: string) {
+  function getType(definition: Swagger2Definition, nestedName: string): string {
     const { $ref, items, type, ...value } = definition;
 
     if ($ref) {
       const [refName, refProperties] = getRef($ref);
       if (refName === 'ID') return 'ID';
+      // If a shallow array interface, return that instead
+      if (refProperties.items && refProperties.items.$ref) {
+        return getType(refProperties, refName);
+      }
       return `${TYPES[refProperties.type] || refName || 'scalar'}`;
     }
 
