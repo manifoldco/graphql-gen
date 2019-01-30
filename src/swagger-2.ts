@@ -87,7 +87,12 @@ function parse(spec: Swagger2) {
       return `[${TYPES[items.type]}]`;
     }
 
-    if (value.oneOf) {
+    if (Array.isArray(value.oneOf)) {
+      if (value.oneOf.length > 1) {
+        console.warn(
+          `Multiple types given for ${nestedName}. Using ${JSON.stringify(value.oneOf[0])}.`
+        );
+      }
       return getType(value.oneOf[0], '');
     }
 
