@@ -1,4 +1,4 @@
-const { resolve, sep } = require('path');
+const { resolve } = require('path');
 const { exec } = require('child_process');
 
 const graphqlGen = resolve(__dirname, '..', 'bin', 'cli.js');

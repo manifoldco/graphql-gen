@@ -68,7 +68,7 @@ function parse(spec: Swagger2) {
         return getType(refProperties, refName);
       }
       if (refProperties.type && TYPES[refProperties.type]) {
-        return TYPES[refProperties.type] || DEFAULT_TYPE;
+        return TYPES[refProperties.type];
       }
       return refName || DEFAULT_TYPE;
     }

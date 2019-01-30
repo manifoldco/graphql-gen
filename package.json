@@ -29,6 +29,7 @@
   },
   "scripts": {
     "build": "node scripts/build",
+    "prepublish": "npm run build",
     "pregenerate": "npm run build",
     "generate": "node scripts/generate",
     "test": "jest",
