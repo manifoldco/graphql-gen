@@ -3,6 +3,7 @@
   "extends": ["tslint:recommended", "tslint-config-prettier", "tslint-plugin-prettier"],
   "jsRules": {},
   "rules": {
+    "array-type": false,
     "prettier": true,
     "interface-name": false
   },
