@@ -2,26 +2,28 @@ import * as prettier from 'prettier';
 
 export interface Swagger2 {
   definitions: {
-    [id: string]: Swagger2Definition;
+    [index: string]: Swagger2Definition;
   };
 }
 
 export interface Swagger2Definition {
   $ref?: string;
   allOf?: Swagger2Definition[];
-  enum?: string[];
   description?: string;
+  enum?: string[];
+  format?: string;
   items?: Swagger2Definition;
-  properties?: { [key: string]: Swagger2Definition };
-  required?: boolean;
-  type: 'array' | 'boolean' | 'integer' | 'number' | 'object' | 'string';
+  oneOf?: Swagger2Definition[];
+  properties?: { [index: string]: Swagger2Definition };
+  required?: string[];
+  type?: 'array' | 'boolean' | 'integer' | 'number' | 'object' | 'string';
 }
 
 // Primitives only!
 const TYPES: { [index: string]: string } = {
   boolean: 'Boolean',
+  float: 'Float',
   integer: 'Int',
-  number: 'Number',
   string: 'String',
 };
 
@@ -54,23 +56,39 @@ function parse(spec: Swagger2) {
   function getType(definition: Swagger2Definition, nestedName: string): string {
     const { $ref, items, type, ...value } = definition;
 
+    const DEFAULT_TYPE = 'Scalar';
+
     if ($ref) {
       const [refName, refProperties] = getRef($ref);
-      if (refName === 'ID') return 'ID';
+      if (refName === 'ID') {
+        return 'ID';
+      }
       // If a shallow array interface, return that instead
       if (refProperties.items && refProperties.items.$ref) {
         return getType(refProperties, refName);
       }
-      return `${TYPES[refProperties.type] || refName || 'scalar'}`;
+      if (refProperties.type && TYPES[refProperties.type]) {
+        return TYPES[refProperties.type] || DEFAULT_TYPE;
+      }
+      return refName || DEFAULT_TYPE;
     }
 
-    if (type === 'array' && items) {
-      if (items.$ref) {
-        const [refName, refProperties] = getRef(items.$ref);
-        if (refName === 'ID') return 'ID';
-        return `[${TYPES[refProperties.type] || refName || 'scalar'}]`;
+    if (type === 'number') {
+      if (value.format && value.format === 'float') {
+        return TYPES.float;
       }
-      return `[${TYPES[items.type] || 'scalar'}]`;
+      return TYPES.integer;
+    }
+
+    if (items && items.$ref) {
+      const [refName] = getRef(items.$ref);
+      return `[${getType(items, refName)}]`;
+    } else if (items && items.type && TYPES[items.type]) {
+      return `[${TYPES[items.type]}]`;
+    }
+
+    if (value.oneOf) {
+      return getType(value.oneOf[0], '');
     }
 
     if (value.properties) {
@@ -79,7 +97,11 @@ function parse(spec: Swagger2) {
       return nestedName;
     }
 
-    return TYPES[type] || type || 'scalar';
+    if (type) {
+      return TYPES[type] || type || DEFAULT_TYPE;
+    }
+
+    return DEFAULT_TYPE;
   }
 
   function buildNextEnum([ID, options]: [string, (string | number)[]]) {
@@ -98,11 +120,14 @@ function parse(spec: Swagger2) {
 
   function buildNextObject() {
     const nextObject = queue.pop();
-    if (!nextObject) return; // Geez TypeScript it’s going to be OK
+    if (!nextObject) {
+      // Geez TypeScript it’s going to be OK
+      return;
+    }
     const [ID, { allOf, properties, required }] = nextObject;
 
     let allProperties = properties || {};
-    let implementations: string[] = [];
+    const implementations: string[] = [];
 
     // Include allOf, if specified
     if (Array.isArray(allOf)) {
@@ -157,7 +182,9 @@ function parse(spec: Swagger2) {
     // Clean up enumQueue
     while (enumQueue.length > 0) {
       const nextEnum = enumQueue.pop();
-      if (nextEnum) buildNextEnum(nextEnum);
+      if (nextEnum) {
+        buildNextEnum(nextEnum);
+      }
     }
   }
 

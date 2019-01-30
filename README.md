@@ -11,10 +11,16 @@ Node client for generating crude GraphQL specs from Swagger OpenAPI.
 | Enum                                 | ✅  |
 | ID                                   | ✅  |
 | Implements (`allOf`)                 | ✅  |
+| Polymorphism\* (`oneOf`)             | N/A |
 | Non-nullable                         | ✅  |
 | Primitives (string, boolean, number) | ✅  |
 | Query                                | 🚫  |
 | Mutation                             | 🚫  |
+
+To compare actual generated output, see the [example](./example) folder.
+
+_\* Polymorphism isn’t supported by GraphQL by design. If this encounters one
+in Swagger, it’ll assign the first type it encounters and throw a warning._
 
 ## Usage
 

@@ -53,9 +53,9 @@ type UpdatePlanBody {
   state: String
   "Used in conjuction with resizable_to to set or unset the list"
   hasResizeConstraints: Boolean
-  resizableTo: ID
+  resizableTo: [ID]
   "Array of Region IDs"
-  regions: ID
+  regions: [ID]
   "Array of Feature Values"
   features: [FeatureValue]
   "The number of days a user gets as a free trial when subscribing to this plan. Trials are valid only once per product; changing plans or adding an additional subscription will not start a new trial."
@@ -71,7 +71,7 @@ type RegionBody {
   platform: String!
   location: String!
   name: String!
-  priority: Number!
+  priority: Int!
 }
 type Region {
   id: ID!
@@ -201,9 +201,9 @@ type PlanBody {
   name: String!
   label: String!
   state: String!
-  resizableTo: ID
+  resizableTo: [ID]
   "Array of Region IDs"
-  regions: ID!
+  regions: [ID]!
   "Array of Feature Values"
   features: [FeatureValue]!
   "The number of days a user gets as a free trial when subscribing to this plan. Trials are valid only once per product; changing plans or adding an additional subscription will not start a new trial."
@@ -236,7 +236,7 @@ type FeatureValueDetailsPrice {
   "Cost is the price in cents that will be added to plan's base cost when this value is selected or is default for the plan. Number features should use the cost range instead."
   cost: Int
   "When a feature is used to multiply the cost of the plan or of another feature, multiply factor is used for calculation. A feature cannot have both a cost and a multiply factor."
-  multiplyFactor: Number
+  multiplyFactor: Int
   "Price describes how the feature cost should be calculated."
   formula: String
   "Description explains how a feature is calculated to the user."
