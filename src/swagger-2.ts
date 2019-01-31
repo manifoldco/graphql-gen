@@ -43,6 +43,7 @@ function snakeCase(name: string) {
 function parse(spec: Swagger2) {
   const queue: [string, Swagger2Definition][] = [];
   const enumQueue: [string, (string | number)[]][] = [];
+  const unionQueue: [string, Swagger2Definition[]][] = [];
   const output: string[] = [];
 
   const { definitions } = spec;
@@ -87,13 +88,9 @@ function parse(spec: Swagger2) {
       return `[${TYPES[items.type]}]`;
     }
 
-    if (Array.isArray(value.oneOf)) {
-      if (value.oneOf.length > 1) {
-        console.warn(
-          `Multiple types given for ${nestedName}. Using ${JSON.stringify(value.oneOf[0])}.`
-        );
-      }
-      return getType(value.oneOf[0], '');
+    if (Array.isArray(value.oneOf) && value.oneOf.length > 0) {
+      unionQueue.push([nestedName, value.oneOf]);
+      return nestedName;
     }
 
     if (value.properties) {
@@ -121,6 +118,11 @@ function parse(spec: Swagger2) {
       }
     });
     output.push('}');
+  }
+
+  function buildNextUnion([ID, types]: [string, Swagger2Definition[]]) {
+    const union = types.map(type => getType(type, '')).join(' | ');
+    output.push(`union ${ID} = ${union}`);
   }
 
   function buildNextObject() {
@@ -189,6 +191,14 @@ function parse(spec: Swagger2) {
       const nextEnum = enumQueue.pop();
       if (nextEnum) {
         buildNextEnum(nextEnum);
+      }
+    }
+
+    // Clean up unionQueue
+    while (unionQueue.length > 0) {
+      const nextUnion = unionQueue.pop();
+      if (nextUnion) {
+        buildNextUnion(nextUnion);
       }
     }
   }

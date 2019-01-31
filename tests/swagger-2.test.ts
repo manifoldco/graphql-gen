@@ -180,6 +180,30 @@ describe('Swagger 2 spec', () => {
 
       expect(graphqlGen(swagger)).toBe(format(graphql));
     });
+
+    it('converts oneOf to union types', () => {
+      const swagger: Swagger2 = {
+        definitions: {
+          Record: {
+            properties: {
+              rand: {
+                oneOf: [{ type: 'string' }, { type: 'integer' }],
+                type: 'array',
+              },
+            },
+            type: 'object',
+          },
+        },
+      };
+
+      const graphql = format(`
+      type Record {
+        rand: RecordRand
+      }
+      union RecordRand = String | Int`);
+
+      expect(graphqlGen(swagger)).toBe(format(graphql));
+    });
   });
 
   describe('complex structures', () => {
@@ -262,29 +286,6 @@ describe('Swagger 2 spec', () => {
       }
       type Admin implements User {
         rbac: String
-      }`);
-
-      expect(graphqlGen(swagger)).toBe(format(graphql));
-    });
-
-    it('handles oneOf (kinda)', () => {
-      const swagger: Swagger2 = {
-        definitions: {
-          Record: {
-            properties: {
-              rand: {
-                oneOf: [{ type: 'string' }, { type: 'number' }],
-                type: 'array',
-              },
-            },
-            type: 'object',
-          },
-        },
-      };
-
-      const graphql = format(`
-      type Record {
-        rand: String
       }`);
 
       expect(graphqlGen(swagger)).toBe(format(graphql));
