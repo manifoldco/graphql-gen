@@ -133,35 +133,38 @@ function parse(spec: Swagger2) {
     }
     const [ID, { allOf, properties, required }] = nextObject;
 
-    let allProperties = properties || {};
-    const implementations: string[] = [];
+    let allProperties = {};
 
     // Include allOf, if specified
     if (Array.isArray(allOf)) {
       allOf.forEach(item => {
         // Add “implements“ if this references other items
         if (item.$ref) {
-          const [refName] = getRef(item.$ref);
-          implementations.push(refName);
+          const refProperties = getRef(item.$ref)[1];
+          if (refProperties && refProperties.properties) {
+            allProperties = { ...allProperties, ...refProperties.properties };
+          }
         } else if (item.properties) {
           allProperties = { ...allProperties, ...item.properties };
         }
       });
     }
 
+    // Then add new properties
+    if (properties && Object.keys(properties).length) {
+      allProperties = { ...allProperties, ...properties };
+    }
+
     // If nothing’s here, let’s skip this one.
     if (!Object.keys(allProperties).length) {
       return;
     }
-    // Open type
-    const isImplementing = implementations.length
-      ? ` implements ${implementations.join(', ')}`
-      : '';
 
-    output.push(`type ${camelCase(ID)}${isImplementing} {`);
+    // Open type
+    output.push(`type ${camelCase(ID)} {`);
 
     // Populate type
-    Object.entries(allProperties).forEach(([key, value]) => {
+    Object.entries(allProperties).forEach(([key, value]: [string, Swagger2Definition]) => {
       const optional = !Array.isArray(required) || required.indexOf(key) === -1;
       const nonNullable = optional ? '' : '!';
       const name = camelCase(key);

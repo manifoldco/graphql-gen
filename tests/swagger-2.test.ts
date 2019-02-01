@@ -284,7 +284,8 @@ describe('Swagger 2 spec', () => {
       type User {
         email: String
       }
-      type Admin implements User {
+      type Admin {
+        email: String
         rbac: String
       }`);
 

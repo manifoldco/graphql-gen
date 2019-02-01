@@ -296,7 +296,21 @@ enum ExpandedProductType {
 enum ExpandedProductVersion {
   Version1
 }
-type ExpandedPlanBody implements PlanBody {
+type ExpandedPlanBody {
+  providerId: ID
+  productId: ID
+  name: String
+  label: String
+  state: String
+  resizableTo: [ID]
+  "Array of Region IDs"
+  regions: [ID]
+  "Array of Feature Values"
+  features: [FeatureValue]
+  "The number of days a user gets as a free trial when subscribing to this plan. Trials are valid only once per product; changing plans or adding an additional subscription will not start a new trial."
+  trialDays: Int
+  "Dollar value in cents."
+  cost: Int
   "An array of feature definitions for the plan, as defined on the Product."
   expandedFeatures: [ExpandedFeature]
   "A boolean flag that indicates if a plan is free or not based on it's cost and features."
@@ -318,10 +332,27 @@ enum ExpandedPlanType {
 enum ExpandedPlanVersion {
   Version1
 }
-type ExpandedFeature implements FeatureType {
+type ExpandedFeature {
+  label: String
+  name: String
+  type: ExpandedFeatureType
+  "This sets whether or not the feature can be customized by a consumer."
+  customizable: Boolean
+  "This sets whether or not the feature can be upgraded by the consumer after the resource has provisioned. Upgrading means setting a higher value or selecting a higher element in the list."
+  upgradable: Boolean
+  "This sets whether or not the feature can be downgraded by the consumer after the resource has provisioned. Downgrading means setting a lower value or selecting a lower element in the list."
+  downgradable: Boolean
+  "Sets if this feature’s value is trackable from the provider, this only really affects numeric constraints."
+  measurable: Boolean
+  values: [FeatureValueDetails]
   "The string value set for the feature on the plan, this should only be used if the value property is null."
   valueString: String
   value: FeatureValueDetails
+}
+enum ExpandedFeatureType {
+  BOOLEAN
+  STRING
+  NUMBER
 }
 type Error {
   "The error type"

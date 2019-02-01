@@ -1,3 +1,5 @@
+[![version (scoped)](https://img.shields.io/npm/v/@manifoldco/graphql-gen.svg)](https://www.npmjs.com/package/@manifoldco/graphql-gen)
+
 # ⚛️ graphql-gen
 
 Node client for generating crude GraphQL specs from Swagger OpenAPI.
@@ -10,8 +12,7 @@ Node client for generating crude GraphQL specs from Swagger OpenAPI.
 | :----------------------------------- | :-: |
 | Enum                                 | ✅  |
 | ID                                   | ✅  |
-| Implements (`allOf`)                 | ✅  |
-| Polymorphism (`oneOf`)               | ✅  |
+| Union (`oneOf`)                      | ✅  |
 | Non-nullable                         | ✅  |
 | Primitives (string, boolean, number) | ✅  |
 | Query                                | 🚫  |
