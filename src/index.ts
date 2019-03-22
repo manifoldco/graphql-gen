@@ -1,6 +1,6 @@
 import swagger2gen, { Swagger2 } from './swagger-2';
 
-export default function(spec: Swagger2, options?: { output?: string; swagger?: number }) {
+export default function(spec: Swagger2, options?: { output?: string; swagger?: number }): string {
   const swagger = (options && options.swagger) || 2;
 
   if (swagger !== 2) {

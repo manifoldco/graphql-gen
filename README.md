@@ -1,4 +1,6 @@
-[![version (scoped)](https://img.shields.io/npm/v/@manifoldco/graphql-gen.svg)](https://www.npmjs.com/package/@manifoldco/graphql-gen)
+[![version
+(scoped)](https://img.shields.io/npm/v/@manifoldco/graphql-gen.svg)](https://www.npmjs.com/package/@manifoldco/graphql-gen)
+[![codecov](https://codecov.io/gh/manifoldco/graphql-gen/branch/master/graph/badge.svg)](https://codecov.io/gh/manifoldco/graphql-gen)
 
 # ⚛️ graphql-gen
 
@@ -33,6 +35,32 @@ npx @manifoldco/graphql-gen schema.yaml --output schema.graphql
 This will save a `schema.graphql` file in the current folder. The CLI can
 accept YAML or JSON for the input file.
 
+#### Generating multiple schemas
+
+Say you have multiple schemas you need to parse. I’ve found the simplest way
+to do that is to use npm scripts. In your `package.json`, you can do
+something like the following:
+
+```json
+"scripts": {
+  "generate:specs": "npm run generate:specs:one && npm run generate:specs:two",
+  "generate:specs:one": "npx @manifoldco/graphql-gen one.yaml -o one.graphql",
+  "generate:specs:two": "npx @manifoldco/graphql-gen two.yaml -o two.graphql"
+}
+```
+
+Rinse and repeat for more specs.
+
+For anything more complicated, or for generating specs dynamically, you can
+also use the Node API (below).
+
+#### CLI Options
+
+| Option                | Alias | Default  | Description                                                |
+| :-------------------- | :---- | :------: | :--------------------------------------------------------- |
+| `--output [location]` | `-o`  | (stdout) | Where should the output file be saved?                     |
+| `--swagger [version]` | `-s`  |   `2`    | Which Swagger version to use. Currently only supports `2`. |
+
 ### Node
 
 ```bash
@@ -40,20 +68,31 @@ npm i --save-dev @manifoldco/graphql-gen
 ```
 
 ```js
+const { readFileSync } = require('fs');
 const graphqlGen = require('@manifoldco/graphql-gen');
 
-graphqlGen(spec, [options]);
+const input = JSON.parse(readFileSync('spec.json', 'utf8')); // Input be any JS object (OpenAPI format)
+const output = graphqlGen(input); // Outputs GraphQL schema as a string (to be parsed, or written to a file)
 ```
 
-`spec` must be in JSON format. For an example of converting YAML to JSON, see
-the [generate.js](./scripts/generate.js) script.
+(OpenAPI format), and return a GraphQL schema in string format. This lets you pull
+from any source (a Swagger server, local files, etc.), and similarly lets put
+The Node API is a bit more flexible: it will only take a JS object as input
+the output anywhere. It even allows for some post-processing in-between if
+desired.
 
-### Options
+If you are working with local files, you’ll have to read/write files
+yourself. Also, if your specs are in YAML, you’ll have to convert them to JS
+objects. A library such as [js-yaml][js-yaml] does make this trivial, though!
+Lastly, if you’re batching large folders of specs, [glob][glob] may also come
+in handy.
 
-| Name      | Default  | Description                                                |
-| :-------- | :------- | :--------------------------------------------------------- |
-| `output`  | (stdout) | Where should the output file be saved?                     |
-| `swagger` | `2`      | Which Swagger version to use. Currently only supports `2`. |
+#### Node Options
+
+| Name        |   Type   |  Default   | Description                                                                                          |
+| :---------- | :------: | :--------: | :--------------------------------------------------------------------------------------------------- |
+| `namespace` | `string` | `OpenAPI2` | How should the output be namespaced? (namespacing is enforced as there’s a high chance of collision) |
+| `swagger`   | `number` |    `2`     | Which Swagger version to use. Currently only supports `2`.                                           |
 
 ## FAQ
 

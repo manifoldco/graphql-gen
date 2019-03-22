@@ -6,7 +6,7 @@ const chalk = require('chalk');
 const { dirname, resolve } = require('path');
 const meow = require('meow');
 const yaml = require('js-yaml');
-const graphQLGen = require('../dist/cjs');
+const { default: graphQLGen } = require('../dist-node');
 
 const cli = meow(
   `

@@ -27,20 +27,20 @@ const TYPES: { [index: string]: string } = {
   string: 'String',
 };
 
-function camelCase(name: string) {
+function camelCase(name: string): string {
   return name.replace(/(-|_|\.|\s)+[a-z]/g, letter =>
     letter.toUpperCase().replace(/[^0-9a-z]/gi, '')
   );
 }
 
-function snakeCase(name: string) {
+function snakeCase(name: string): string {
   return name
     .replace(/(-|\.|\s)/g, '_')
     .replace(/[A-Z]/g, letter => `_${letter}`)
     .toUpperCase();
 }
 
-function parse(spec: Swagger2) {
+function parse(spec: Swagger2): string {
   const queue: [string, Swagger2Definition][] = [];
   const enumQueue: [string, (string | number)[]][] = [];
   const unionQueue: [string, Swagger2Definition[]][] = [];
@@ -106,7 +106,7 @@ function parse(spec: Swagger2) {
     return DEFAULT_TYPE;
   }
 
-  function buildNextEnum([ID, options]: [string, (string | number)[]]) {
+  function buildNextEnum([ID, options]: [string, (string | number)[]]): void {
     output.push(`enum ${ID} {`);
     options.forEach(option => {
       if (typeof option === 'number' || isNaN(parseInt(option, 10)) === false) {
@@ -120,12 +120,12 @@ function parse(spec: Swagger2) {
     output.push('}');
   }
 
-  function buildNextUnion([ID, types]: [string, Swagger2Definition[]]) {
+  function buildNextUnion([ID, types]: [string, Swagger2Definition[]]): void {
     const union = types.map(type => getType(type, '')).join(' | ');
     output.push(`union ${ID} = ${union}`);
   }
 
-  function buildNextObject() {
+  function buildNextObject(): void {
     const nextObject = queue.pop();
     if (!nextObject) {
       // Geez TypeScript it’s going to be OK
