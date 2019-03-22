@@ -1,4 +1,6 @@
-[![version (scoped)](https://img.shields.io/npm/v/@manifoldco/graphql-gen.svg)](https://www.npmjs.com/package/@manifoldco/graphql-gen)
+[![version
+(scoped)](https://img.shields.io/npm/v/@manifoldco/graphql-gen.svg)](https://www.npmjs.com/package/@manifoldco/graphql-gen)
+[![codecov](https://codecov.io/gh/manifoldco/graphql-gen/branch/master/graph/badge.svg)](https://codecov.io/gh/manifoldco/graphql-gen)
 
 # ⚛️ graphql-gen
 

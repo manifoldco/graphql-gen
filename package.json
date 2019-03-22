@@ -27,37 +27,60 @@
   "bugs": {
     "url": "https://github.com/manifoldco/graphql-gen/issues"
   },
+  "@pika/pack": {
+    "pipeline": [
+      [
+        "@pika/plugin-ts-standard-pkg"
+      ],
+      [
+        "@pika/plugin-build-node"
+      ],
+      [
+        "@pika/plugin-copy-assets",
+        {
+          "files": [
+            "bin/"
+          ]
+        }
+      ]
+    ]
+  },
   "scripts": {
-    "build": "node scripts/build",
-    "prepublish": "npm run build",
+    "build": "pack build",
     "pregenerate": "npm run build",
-    "generate": "node scripts/generate",
+    "generate": "node pkg/bin/cli example/input.yaml -o example/output.graphql",
+    "lint": "eslint --ignore-path .gitignore --ext .js,.ts src",
+    "prepublish": "npm run build",
+    "publish": "pack publish --any-branch",
     "test": "jest",
     "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "chalk": "^2.4.2",
     "fs-extra": "^7.0.1",
-    "js-yaml": "^3.12.1",
+    "js-yaml": "^3.13.0",
     "meow": "^5.0.0",
-    "prettier": "^1.16.1"
+    "prettier": "^1.16.4"
   },
   "devDependencies": {
+    "@pika/pack": "^0.3.5",
+    "@pika/plugin-build-node": "^0.3.14",
+    "@pika/plugin-copy-assets": "^0.3.14",
+    "@pika/plugin-ts-standard-pkg": "^0.3.14",
     "@types/fs-extra": "^5.0.4",
     "@types/glob": "^7.1.1",
-    "@types/jest": "^23.3.13",
+    "@types/jest": "^24.0.11",
     "@types/js-yaml": "^3.12.0",
     "@types/prettier": "^1.15.2",
-    "jest": "^23.6.0",
-    "rollup": "^1.1.2",
-    "rollup-plugin-terser": "^4.0.2",
-    "rollup-plugin-typescript": "^1.0.0",
-    "ts-jest": "^23.10.5",
+    "@typescript-eslint/eslint-plugin": "^1.5.0",
+    "@typescript-eslint/parser": "^1.5.0",
+    "eslint": "^5.15.3",
+    "eslint-config-prettier": "^4.1.0",
+    "eslint-plugin-prettier": "^3.0.1",
+    "jest": "^24.5.0",
+    "ts-jest": "^24.0.0",
     "tslib": "^1.9.3",
-    "tslint": "^5.12.1",
-    "tslint-config-prettier": "^1.17.0",
-    "tslint-plugin-prettier": "^2.0.1",
-    "typescript": "^3.2.4"
+    "typescript": "^3.3.4000"
   },
   "peerDependencies": {
     "prettier": "^1.0.0"
