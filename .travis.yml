@@ -11,6 +11,9 @@ jobs:
     - stage: test
       name: 'Run tests'
       script: npm run test:coverage
+    - stage: test
+      name: 'CLI'
+      script: npm run generate
 after_success:
   - npx codecov
 cache: npm
