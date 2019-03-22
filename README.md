@@ -124,4 +124,6 @@ time? ISO? Are there timezones? Types can be so much more descriptive than
 mere `string` or `int`, and GraphQL gives you the tools to declare this
 yourself.
 
+[glob]: https://www.npmjs.com/package/glob
+[js-yaml]: https://www.npmjs.com/package/js-yaml
 [prettier]: https://github.com/prettier/prettier
