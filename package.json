@@ -73,7 +73,7 @@
     "@types/js-yaml": "^3.12.0",
     "@types/prettier": "^1.15.2",
     "@typescript-eslint/eslint-plugin": "^1.5.0",
-    "@typescript-eslint/parser": "^1.5.0",
+    "@typescript-eslint/parser": "^2.0.0",
     "eslint": "^5.15.3",
     "eslint-config-prettier": "^4.1.0",
     "eslint-plugin-prettier": "^3.0.1",
