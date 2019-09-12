@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "baseUrl": "./src",
     "declaration": true,
     "forceConsistentCasingInFileNames": true,
     "lib": ["esnext"],
@@ -9,11 +8,10 @@
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noUnusedLocals": true,
-    "outDir": "dist",
     "removeComments": true,
     "sourceMap": true,
     "strict": true,
-    "target": "es5"
+    "target": "es2019"
   },
-  "exclude": ["example/*", "tests/*"]
+  "exclude": ["example/*", "node_modules/*", "pkg/*", "tests/*"]
 }

@@ -133,7 +133,7 @@ function parse(spec: Swagger2): string {
     }
     const [ID, { allOf, properties, required }] = nextObject;
 
-    let allProperties = {};
+    let allProperties: { [index: string]: Swagger2Definition } = {};
 
     // Include allOf, if specified
     if (Array.isArray(allOf)) {
@@ -164,7 +164,7 @@ function parse(spec: Swagger2): string {
     output.push(`type ${camelCase(ID)} {`);
 
     // Populate type
-    Object.entries(allProperties).forEach(([key, value]: [string, Swagger2Definition]) => {
+    Object.entries(allProperties).forEach(([key, value]) => {
       const optional = !Array.isArray(required) || required.indexOf(key) === -1;
       const nonNullable = optional ? '' : '!';
       const name = camelCase(key);
