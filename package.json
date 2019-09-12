@@ -64,7 +64,7 @@
   },
   "devDependencies": {
     "@pika/pack": "^0.3.5",
-    "@pika/plugin-build-node": "^0.3.14",
+    "@pika/plugin-build-node": "^0.6.0",
     "@pika/plugin-copy-assets": "^0.3.14",
     "@pika/plugin-ts-standard-pkg": "^0.3.14",
     "@types/fs-extra": "^5.0.4",
