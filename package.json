@@ -68,7 +68,7 @@
     "@pika/plugin-copy-assets": "^0.8.1",
     "@pika/plugin-ts-standard-pkg": "^0.8.1",
     "@types/fs-extra": "^8.0.1",
-    "@types/jest": "^24.0.11",
+    "@types/jest": "^26.0.13",
     "@types/js-yaml": "^3.12.0",
     "@types/prettier": "^1.15.2",
     "@typescript-eslint/eslint-plugin": "^2.2.0",
